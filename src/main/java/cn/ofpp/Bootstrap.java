@@ -27,6 +27,15 @@ public class Bootstrap {
     public static final String TEMPLATE_ID = "pnJwNjqLSeCWDRmvyCwQPjwdjXdwLG8ezMTVbqiaeJQ";
 
     /**
+     * 为 true 时，N2 相关三个模板变量会经 {@link cn.ofpp.core.WeChatThingText#limitForThing} 做约 20 码点截断（面向公众号后台里
+     * {@code thing}/{@code thing1} 等短字段）。该截断在本地按码点截断，无法阻止微信服务端对 thing 再截断，故仍可能出现「~基」类残缺。
+     * <p>
+     * 若你已在公众平台把「今日 N2 / 接续 / 例句」改成<strong>短语</strong>等更长类型，请设为 {@code false}，将直接发送 JSON 中的完整日文
+     * （SDK 侧不会对假名做过滤）。
+     */
+    public static final boolean N2_APPLY_THING_CHAR_LIMIT = true;
+
+    /**
      * 初始化
      */
     public static void init() {

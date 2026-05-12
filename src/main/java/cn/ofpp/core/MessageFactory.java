@@ -17,7 +17,7 @@ public class MessageFactory {
 
     public static WxMpTemplateMessage resolveMessage(Friend friend) {
         return WxMpTemplateMessage.builder()
-                .url("https://ofpp.cn") // 点击后的跳转链接 可自行修改 也可以不填
+                .url("https://news.web.nhk/news/easy/") // 点击后的跳转链接 可自行修改 也可以不填
                 .toUser(friend.getUserId())
                 .templateId(StrUtil.emptyToDefault(friend.getTemplateId(), Bootstrap.TEMPLATE_ID))
                 .data(buildData(friend))
@@ -66,13 +66,26 @@ public class MessageFactory {
                 TemplateDataBuilder.builder().name("winddirection").value(weather.getWinddirection()).color("#F5319D").build(),
                 TemplateDataBuilder.builder().name("windpower").value(weather.getWindpower()).color("#3491FA").build(),
                 TemplateDataBuilder.builder().name("humidity").value(weather.getHumidity()).color("#F77234").build(),
-                TemplateDataBuilder.builder().name("n2Title").value(WeChatThingText.limitForThing(n2.getTitle())).color("#165DFF").build(),
-                TemplateDataBuilder.builder().name("n2Pattern").value(WeChatThingText.limitForThing(n2.getPattern())).color("#0FC6C2").build(),
-                TemplateDataBuilder.builder().name("n2Example").value(WeChatThingText.limitForThing(n2.getExample())).color("#722ED1").build(),
+                TemplateDataBuilder.builder().name("n2Title").value(n2TemplateValue(n2.getTitle())).color("#165DFF").build(),
+                TemplateDataBuilder.builder().name("n2Pattern").value(n2TemplateValue(n2.getPattern())).color("#0FC6C2").build(),
+                TemplateDataBuilder.builder().name("n2Example").value(n2TemplateValue(n2.getExample())).color("#722ED1").build(),
                 TemplateDataBuilder.builder().name("author").value(ancientPoetry.getAuthor()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("origin").value(ancientPoetry.getOrigin()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("content").value(ancientPoetry.getContent()).color("#F53F3F").build()
         );
+    }
+
+    /**
+     * N2 文案写入模板变量：仅在 {@link Bootstrap#N2_APPLY_THING_CHAR_LIMIT} 为 true 时做 thing 类长度收敛；否则原样发送（换行仍压成空格）。
+     */
+    private static String n2TemplateValue(String raw) {
+        if (Bootstrap.N2_APPLY_THING_CHAR_LIMIT) {
+            return WeChatThingText.limitForThing(raw);
+        }
+        if (StrUtil.isBlank(raw)) {
+            return "-";
+        }
+        return raw.replace('\r', ' ').replace('\n', ' ').trim();
     }
 
     static class TemplateDataBuilder {
