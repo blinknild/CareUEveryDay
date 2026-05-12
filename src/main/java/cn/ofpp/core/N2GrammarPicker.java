@@ -1,8 +1,11 @@
 package cn.ofpp.core;
 
-import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -24,10 +27,23 @@ public final class N2GrammarPicker {
     }
 
     private static List<N2GrammarItem> loadItems() {
-        try {
-            String json = ResourceUtil.readUtf8Str("n2-grammar.json");
-            return Collections.unmodifiableList(
-                    JSONUtil.toList(JSONUtil.parseObj(json).getJSONArray("items"), N2GrammarItem.class));
+        try (InputStream in = N2GrammarPicker.class.getClassLoader().getResourceAsStream("n2-grammar.json")) {
+            if (in == null) {
+                System.err.println("读取 n2-grammar.json 失败: JAR/classpath 内找不到该文件（请确认已放入 src/main/resources）");
+                return List.of(fallbackItem());
+            }
+            String json = IoUtil.readUtf8(in);
+            JSONObject root = JSONUtil.parseObj(json);
+            JSONArray arr = root.getJSONArray("items");
+            if (arr == null || arr.isEmpty()) {
+                System.err.println("读取 n2-grammar.json 失败: items 数组为空");
+                return List.of(fallbackItem());
+            }
+            List<N2GrammarItem> list = new ArrayList<>(arr.size());
+            for (int i = 0; i < arr.size(); i++) {
+                list.add(arr.getJSONObject(i).toBean(N2GrammarItem.class));
+            }
+            return Collections.unmodifiableList(list);
         } catch (Exception e) {
             System.err.println("读取 n2-grammar.json 失败: " + e.getMessage());
             return List.of(fallbackItem());
