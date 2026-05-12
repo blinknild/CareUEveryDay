@@ -41,6 +41,9 @@ public class MessageFactory {
      *      风力描述{{winddirection.DATA}}
      *      风力级别{{windpower.DATA}}
      *      空气湿度{{humidity.DATA}}
+     *      今日N2{{n2Title.DATA}}
+     *      接续{{n2Pattern.DATA}}
+     *      例句{{n2Example.DATA}}
      *      {{author.DATA}}
      *      {{origin.DATA}}
      *      {{content.DATA}}
@@ -49,6 +52,7 @@ public class MessageFactory {
     private static List<WxMpTemplateData> buildData(Friend friend) {
         WeatherInfo weather = GaodeUtil.getNowWeatherInfo(getAdcCode(friend.getProvince(), friend.getCity()));
         RandomAncientPoetry.AncientPoetry ancientPoetry = RandomAncientPoetry.getNext();
+        N2GrammarItem n2 = N2GrammarPicker.pickForToday();
         return List.of(
                 TemplateDataBuilder.builder().name("friendName").value(friend.getFullName()).color("#D91AD9").build(),
                 TemplateDataBuilder.builder().name("howOld").value(friend.getHowOld().toString()).color("#F77234").build(),
@@ -62,6 +66,9 @@ public class MessageFactory {
                 TemplateDataBuilder.builder().name("winddirection").value(weather.getWinddirection()).color("#F5319D").build(),
                 TemplateDataBuilder.builder().name("windpower").value(weather.getWindpower()).color("#3491FA").build(),
                 TemplateDataBuilder.builder().name("humidity").value(weather.getHumidity()).color("#F77234").build(),
+                TemplateDataBuilder.builder().name("n2Title").value(StrUtil.blankToDefault(n2.getTitle(), "-")).color("#165DFF").build(),
+                TemplateDataBuilder.builder().name("n2Pattern").value(StrUtil.blankToDefault(n2.getPattern(), "-")).color("#0FC6C2").build(),
+                TemplateDataBuilder.builder().name("n2Example").value(StrUtil.blankToDefault(n2.getExample(), "-")).color("#722ED1").build(),
                 TemplateDataBuilder.builder().name("author").value(ancientPoetry.getAuthor()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("origin").value(ancientPoetry.getOrigin()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("content").value(ancientPoetry.getContent()).color("#F53F3F").build()

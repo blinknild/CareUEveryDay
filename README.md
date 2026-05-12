@@ -42,7 +42,10 @@
 当前气温{{temperature.DATA}}
 风力描述{{winddirection.DATA}}
 风力级别{{windpower.DATA}}
-空气湿度{{windpower.DATA}}
+空气湿度{{humidity.DATA}}
+今日N2{{n2Title.DATA}}
+接续{{n2Pattern.DATA}}
+例句{{n2Example.DATA}}
 {{author.DATA}}
 {{origin.DATA}}
 {{content.DATA}}
@@ -55,6 +58,8 @@
 ```
 是古诗的变量，如果`Bootstrap`中配置未开启随机古诗 那么这三个就是不要的
 
+`今日N2 / 接续 / 例句` 三个变量来自 `src/main/resources/n2-grammar.json`：按**中国时区当天日期**的「日」对 10 取余，与条目的 `id` 对 10 取余相同则入选；同一余数多条时在月内轮转。公众号后台模板里需增加对应关键字 `n2Title`、`n2Pattern`、`n2Example`（与代码中 `MessageFactory` 一致）。
+
 
 #### 核心类介绍
 
@@ -62,4 +67,6 @@
 Application.java          // 启动类
 Bootstrap.java            // 一些启动配置(公众号信息在这里配置)
 core/MessageFactory.java  // 创建微信消息对象的代码就在这里面 有需要可以自己修改下变量
+src/main/resources/n2-grammar.json  // JLPT N2 语法与例句（可自增条目）
+core/N2GrammarPicker.java // 按日期从 JSON 选取一条语法
 ```
