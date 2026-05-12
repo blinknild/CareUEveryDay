@@ -66,9 +66,9 @@ public class MessageFactory {
                 TemplateDataBuilder.builder().name("winddirection").value(weather.getWinddirection()).color("#F5319D").build(),
                 TemplateDataBuilder.builder().name("windpower").value(weather.getWindpower()).color("#3491FA").build(),
                 TemplateDataBuilder.builder().name("humidity").value(weather.getHumidity()).color("#F77234").build(),
-                TemplateDataBuilder.builder().name("n2Title").value(StrUtil.blankToDefault(n2.getTitle(), "-")).color("#165DFF").build(),
-                TemplateDataBuilder.builder().name("n2Pattern").value(StrUtil.blankToDefault(n2.getPattern(), "-")).color("#0FC6C2").build(),
-                TemplateDataBuilder.builder().name("n2Example").value(StrUtil.blankToDefault(n2.getExample(), "-")).color("#722ED1").build(),
+                TemplateDataBuilder.builder().name("n2Title").value(WeChatThingText.limitForThing(n2.getTitle())).color("#165DFF").build(),
+                TemplateDataBuilder.builder().name("n2Pattern").value(WeChatThingText.limitForThing(n2.getPattern())).color("#0FC6C2").build(),
+                TemplateDataBuilder.builder().name("n2Example").value(WeChatThingText.limitForThing(n2.getExample())).color("#722ED1").build(),
                 TemplateDataBuilder.builder().name("author").value(ancientPoetry.getAuthor()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("origin").value(ancientPoetry.getOrigin()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("content").value(ancientPoetry.getContent()).color("#F53F3F").build()
