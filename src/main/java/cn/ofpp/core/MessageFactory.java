@@ -52,7 +52,7 @@ public class MessageFactory {
     private static List<WxMpTemplateData> buildData(Friend friend) {
         WeatherInfo weather = GaodeUtil.getNowWeatherInfo(getAdcCode(friend.getProvince(), friend.getCity()));
         RandomAncientPoetry.AncientPoetry ancientPoetry = RandomAncientPoetry.getNext();
-        N2GrammarItem n2 = N2GrammarPicker.pickForToday();
+        N2GrammarItem n2 = Bootstrap.N2_MINIMAL_JP_TEST ? minimalJpN2() : N2GrammarPicker.pickForToday();
         return List.of(
                 TemplateDataBuilder.builder().name("friendName").value(friend.getFullName()).color("#D91AD9").build(),
                 TemplateDataBuilder.builder().name("howOld").value(friend.getHowOld().toString()).color("#F77234").build(),
@@ -73,6 +73,16 @@ public class MessageFactory {
                 TemplateDataBuilder.builder().name("origin").value(ancientPoetry.getOrigin()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("content").value(ancientPoetry.getContent()).color("#F53F3F").build()
         );
+    }
+
+    /** 极简日文，便于验证模板字段能否正常展示。 */
+    private static N2GrammarItem minimalJpN2() {
+        N2GrammarItem it = new N2GrammarItem();
+        it.setId(0);
+        it.setTitle("テスト");
+        it.setPattern("は");
+        it.setExample("こんにちは。");
+        return it;
     }
 
     /**

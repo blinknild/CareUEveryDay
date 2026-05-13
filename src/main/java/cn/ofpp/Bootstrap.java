@@ -36,6 +36,12 @@ public class Bootstrap {
     public static final boolean N2_APPLY_THING_CHAR_LIMIT = true;
 
     /**
+     * 为 true 时，「今日 N2 / 接续 / 例句」三格固定为极简日文（不读 JSON），用于排查推送或编码问题。
+     * 确认正常后请改回 {@code false}。
+     */
+    public static final boolean N2_MINIMAL_JP_TEST = true;
+
+    /**
      * 初始化
      */
     public static void init() {
