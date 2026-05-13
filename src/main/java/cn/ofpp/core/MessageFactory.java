@@ -79,7 +79,7 @@ public class MessageFactory {
     private static N2GrammarItem minimalJpN2() {
         N2GrammarItem it = new N2GrammarItem();
         it.setId(0);
-        it.setTitle("テスト");
+        it.setTitle("这只是个标题");
         it.setPattern("は");
         it.setExample("こんにちは。");
         return it;
