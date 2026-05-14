@@ -41,9 +41,6 @@ public class MessageFactory {
      *      风力描述{{winddirection.DATA}}
      *      风力级别{{windpower.DATA}}
      *      空气湿度{{humidity.DATA}}
-     *      今日N2{{n2Title.DATA}}
-     *      接续{{n2Pattern.DATA}}
-     *      例句{{n2Example.DATA}}
      *      {{author.DATA}}
      *      {{origin.DATA}}
      *      {{content.DATA}}
@@ -52,7 +49,6 @@ public class MessageFactory {
     private static List<WxMpTemplateData> buildData(Friend friend) {
         WeatherInfo weather = GaodeUtil.getNowWeatherInfo(getAdcCode(friend.getProvince(), friend.getCity()));
         RandomAncientPoetry.AncientPoetry ancientPoetry = RandomAncientPoetry.getNext();
-        N2GrammarItem n2 = Bootstrap.N2_MINIMAL_JP_TEST ? minimalJpN2() : N2GrammarPicker.pickForToday();
         return List.of(
                 TemplateDataBuilder.builder().name("friendName").value(friend.getFullName()).color("#D91AD9").build(),
                 TemplateDataBuilder.builder().name("howOld").value(friend.getHowOld().toString()).color("#F77234").build(),
@@ -66,36 +62,10 @@ public class MessageFactory {
                 TemplateDataBuilder.builder().name("winddirection").value(weather.getWinddirection()).color("#F5319D").build(),
                 TemplateDataBuilder.builder().name("windpower").value(weather.getWindpower()).color("#3491FA").build(),
                 TemplateDataBuilder.builder().name("humidity").value(weather.getHumidity()).color("#F77234").build(),
-                TemplateDataBuilder.builder().name("n2Title").value(n2TemplateValue(n2.getTitle())).color("#165DFF").build(),
-                TemplateDataBuilder.builder().name("n2Pattern").value(n2TemplateValue(n2.getPattern())).color("#0FC6C2").build(),
-                TemplateDataBuilder.builder().name("n2Example").value(n2TemplateValue(n2.getExample())).color("#722ED1").build(),
                 TemplateDataBuilder.builder().name("author").value(ancientPoetry.getAuthor()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("origin").value(ancientPoetry.getOrigin()).color("#F53F3F").build(),
                 TemplateDataBuilder.builder().name("content").value(ancientPoetry.getContent()).color("#F53F3F").build()
         );
-    }
-
-    /** 极简日文，便于验证模板字段能否正常展示。 */
-    private static N2GrammarItem minimalJpN2() {
-        N2GrammarItem it = new N2GrammarItem();
-        it.setId(0);
-        it.setTitle("这只是个标题");
-        it.setPattern("は");
-        it.setExample("こんにちは。");
-        return it;
-    }
-
-    /**
-     * N2 文案写入模板变量：仅在 {@link Bootstrap#N2_APPLY_THING_CHAR_LIMIT} 为 true 时做 thing 类长度收敛；否则原样发送（换行仍压成空格）。
-     */
-    private static String n2TemplateValue(String raw) {
-        if (Bootstrap.N2_APPLY_THING_CHAR_LIMIT) {
-            return WeChatThingText.limitForThing(raw);
-        }
-        if (StrUtil.isBlank(raw)) {
-            return "-";
-        }
-        return raw.replace('\r', ' ').replace('\n', ' ').trim();
     }
 
     static class TemplateDataBuilder {
