@@ -14,9 +14,9 @@
 然后就自己随便做了一个玩了一下
 
 本项目不需要服务器
-基于Github Actions实现每天固定运行一次 需注意GithubActions使用的UTC时间 转换为北京时间需要-8小时处理
+基于 Github Actions 实现每天固定运行一次；工作流按 **UTC** 调度，北京时间 = UTC+8。
 
-`友情提示：master分支github actions执行规则是每天早上7点自动执行`
+`友情提示：master 分支 Github Actions 为每天北京时间 20:00 左右执行一次（cron 对应 UTC 12:00；实际触发可能有数分钟漂移）`
 `如果需要监听推送执行 请切换workflow_on_push分支`
 
 博客可能有些慢 我将内容移植到了语雀笔记 国内访问会很快

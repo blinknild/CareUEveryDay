@@ -3,8 +3,9 @@ name: CareUEveryDay Cron CI
 on:
   push:
     branches: [master]
+  # GitHub 按 UTC 触发：12:00 UTC = 北京时间 20:00（全年 UTC+8）
   schedule:
-    - cron: '10 * * * *'
+    - cron: '0 12 * * *'
 
 jobs:
   build:

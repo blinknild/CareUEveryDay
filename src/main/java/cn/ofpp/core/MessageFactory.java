@@ -17,7 +17,7 @@ public class MessageFactory {
 
     public static WxMpTemplateMessage resolveMessage(Friend friend) {
         return WxMpTemplateMessage.builder()
-                .url("https://news.web.nhk/news/easy/") // 点击后的跳转链接 可自行修改 也可以不填
+                .url("https://blinknild.github.io/learning/") // 点击后的跳转链接 可自行修改 也可以不填
                 .toUser(friend.getUserId())
                 .templateId(StrUtil.emptyToDefault(friend.getTemplateId(), Bootstrap.TEMPLATE_ID))
                 .data(buildData(friend))
